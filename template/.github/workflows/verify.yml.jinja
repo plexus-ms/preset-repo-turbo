@@ -57,16 +57,16 @@ jobs:
     # The update bot writes no changesets: the verb writes the one its bump
     # owes and commits it to the bot's branch, pushed with a token minted for
     # the tenant's own GitHub App (contents write on this repo; repo variable
-    # CHANGESET_APP_ID, secret CHANGESET_APP_PRIVATE_KEY) so that the new tip
+    # PLX_APP_ID, secret PLX_APP_PRIVATE_KEY) so that the new tip
     # runs this workflow; a push with the workflow token starts no run.
     if: ${{ startsWith(github.head_ref, 'renovate/') }}
     uses: plexus-ms/primitives/.github/workflows/_changeset.yml@0.101.0
     permissions:
       contents: write
     with:
-      app_id: ${{ vars.CHANGESET_APP_ID }}
+      app_id: ${{ vars.PLX_APP_ID }}
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
     secrets:
-      app_private_key: ${{ secrets.CHANGESET_APP_PRIVATE_KEY }}
+      app_private_key: ${{ secrets.PLX_APP_PRIVATE_KEY }}
 {% endraw %}{% endif %}
