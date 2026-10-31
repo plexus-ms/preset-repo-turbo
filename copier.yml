@@ -10,6 +10,11 @@ tenant:
   help: "Tenant slug (URL-friendly)"
   placeholder: "acme-corp"
 
+publishes_packages:
+  type: bool
+  help: "Does this repo publish npm packages from its trunk (changesets, OIDC trusted publishing, § 5 PLX-Delivery) instead of deploying apps from environment branches?"
+  default: false
+
 renovate_reviewers:
   type: str
   help: "GitHub logins the update bot requests a review from on the PRs that wait for a human, comma-separated (empty: none); a PR the bot merges itself asks nobody unless its checks fail"
