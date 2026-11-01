@@ -17,14 +17,14 @@ permissions:
 # Where the jobs run: see verify.yml.
 jobs:
   verify:
-    uses: plexus-ms/primitives/.github/workflows/_verify.yml@0.102.0
+    uses: plexus-ms/primitives/.github/workflows/_verify.yml@0.103.0
     with:
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
 
   release:
     needs: verify
-    uses: plexus-ms/primitives/.github/workflows/_release-package.yml@0.102.0
+    uses: plexus-ms/primitives/.github/workflows/_release-package.yml@0.103.0
     with:
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
