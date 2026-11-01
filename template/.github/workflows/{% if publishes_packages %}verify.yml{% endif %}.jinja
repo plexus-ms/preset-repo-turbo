@@ -26,12 +26,23 @@ concurrency:
 # for GitHub's runners; CI_RUNNER_PERSISTENT is `true` when that runner keeps
 # its disk between jobs, so caches stay local. Unset both to be back on
 # GitHub's runners with the next push.
+#
+# Turbo's remote cache (§ 8 PLX-Delivery), off until TURBO_CACHE_BUCKET is
+# set: the repo variables TURBO_CACHE_ENDPOINT, TURBO_CACHE_REGION and
+# TURBO_CACHE_BUCKET name an S3 bucket of the tenant's own, the repo secrets
+# TURBO_CACHE_ACCESS_KEY and TURBO_CACHE_SECRET_KEY grant read and write on it.
 jobs:
   verify:
     uses: plexus-ms/primitives/.github/workflows/_verify.yml@0.103.0
     with:
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
+      turbo-cache-endpoint: ${{ vars.TURBO_CACHE_ENDPOINT || '' }}
+      turbo-cache-region: ${{ vars.TURBO_CACHE_REGION || '' }}
+      turbo-cache-bucket: ${{ vars.TURBO_CACHE_BUCKET || '' }}
+    secrets:
+      turbo-cache-access-key: ${{ secrets.TURBO_CACHE_ACCESS_KEY }}
+      turbo-cache-secret-key: ${{ secrets.TURBO_CACHE_SECRET_KEY }}
 
   changeset-status:
     # The Version Packages branch is *built by* `changeset version`, which

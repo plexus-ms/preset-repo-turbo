@@ -32,6 +32,11 @@ permissions:
 # for GitHub's runners; CI_RUNNER_PERSISTENT is `true` when that runner keeps
 # its disk between jobs, so caches stay local. Unset both to be back on
 # GitHub's runners with the next push.
+#
+# Turbo's remote cache (§ 8 PLX-Delivery), off until TURBO_CACHE_BUCKET is
+# set: the repo variables TURBO_CACHE_ENDPOINT, TURBO_CACHE_REGION and
+# TURBO_CACHE_BUCKET name an S3 bucket of the tenant's own, the repo secrets
+# TURBO_CACHE_ACCESS_KEY and TURBO_CACHE_SECRET_KEY grant read and write on it.
 jobs:
   verify:
     # Pull requests, and a run by hand on a branch that names no environment.
@@ -45,6 +50,12 @@ jobs:
     with:
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
+      turbo-cache-endpoint: ${{ vars.TURBO_CACHE_ENDPOINT || '' }}
+      turbo-cache-region: ${{ vars.TURBO_CACHE_REGION || '' }}
+      turbo-cache-bucket: ${{ vars.TURBO_CACHE_BUCKET || '' }}
+    secrets:
+      turbo-cache-access-key: ${{ secrets.TURBO_CACHE_ACCESS_KEY }}
+      turbo-cache-secret-key: ${{ secrets.TURBO_CACHE_SECRET_KEY }}
 
   changed-apps:
     if: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') }}
@@ -71,6 +82,11 @@ jobs:
       host: ${{ vars.DEPLOY_HOST }}
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
+      turbo-cache-endpoint: ${{ vars.TURBO_CACHE_ENDPOINT || '' }}
+      turbo-cache-region: ${{ vars.TURBO_CACHE_REGION || '' }}
+      turbo-cache-bucket: ${{ vars.TURBO_CACHE_BUCKET || '' }}
     secrets:
       ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      turbo-cache-access-key: ${{ secrets.TURBO_CACHE_ACCESS_KEY }}
+      turbo-cache-secret-key: ${{ secrets.TURBO_CACHE_SECRET_KEY }}
 {% endraw %}

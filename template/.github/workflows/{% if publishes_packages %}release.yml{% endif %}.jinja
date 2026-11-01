@@ -21,6 +21,12 @@ jobs:
     with:
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
+      turbo-cache-endpoint: ${{ vars.TURBO_CACHE_ENDPOINT || '' }}
+      turbo-cache-region: ${{ vars.TURBO_CACHE_REGION || '' }}
+      turbo-cache-bucket: ${{ vars.TURBO_CACHE_BUCKET || '' }}
+    secrets:
+      turbo-cache-access-key: ${{ secrets.TURBO_CACHE_ACCESS_KEY }}
+      turbo-cache-secret-key: ${{ secrets.TURBO_CACHE_SECRET_KEY }}
 
   release:
     needs: verify
