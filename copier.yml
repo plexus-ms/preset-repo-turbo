@@ -4,6 +4,15 @@ _tasks:
   - "git init"
   - "mise trust"
   - "mise install"
+  # The template states majors, never versions (§ 1 PLX-Updates); the two pins the toolchain
+  # needs exact are written once at birth, so a repo starts at the newest release and its
+  # update bot is the only writer from then on. Two accepted limits: corepack ignores the
+  # three-day release age, and pnpm saves an exact version only without a range, so Biome
+  # is born at its newest release whatever the major.
+  - command: "mise exec -- npx corepack use pnpm@12"
+    when: "{{ _copier_operation == 'copy' }}"
+  - command: "mise exec -- pnpm add --workspace-root --save-dev --save-exact @biomejs/biome"
+    when: "{{ _copier_operation == 'copy' }}"
 
 tenant:
   type: str
