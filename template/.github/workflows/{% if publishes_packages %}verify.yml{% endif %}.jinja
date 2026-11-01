@@ -1,9 +1,9 @@
 {% raw %}name: verify
 
-# Mounts the verify verb on every push (§ 2 PLX-Delivery): is the repo sound?
-# One repo-wide job; the per-app gate before a release is deploy.yml's own.
-# Managed by copier: edit the preset (plexus-ms/preset-repo-web), never this file.
-{% endraw %}{% if publishes_packages %}{% raw %}#
+# Mounts the verify verb on every pull request (§ 2 PLX-Delivery): is the
+# repo sound? Managed by copier: edit the preset (plexus-ms/preset-repo-web),
+# never this file.
+#
 # A package repo's trunk admits nothing but pull requests, so this runs on
 # every pull request, tested as the merge result; a push trigger would never
 # fire for the "version packages" PR, whose branch the release job pushes with
@@ -14,10 +14,7 @@
 
 on:
   pull_request:
-{% endraw %}{% else %}{% raw %}
-on:
-  push:
-{% endraw %}{% endif %}{% raw %}
+
 permissions:
   contents: read
 
@@ -35,7 +32,7 @@ jobs:
     with:
       runner: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
-{% endraw %}{% if publishes_packages %}{% raw %}
+
   changeset-status:
     # The Version Packages branch is *built by* `changeset version`, which
     # consumes the changeset files it releases — there "changed packages, no
@@ -69,4 +66,4 @@ jobs:
       persistent: ${{ vars.CI_RUNNER_PERSISTENT == 'true' }}
     secrets:
       app_private_key: ${{ secrets.PLX_APP_PRIVATE_KEY }}
-{% endraw %}{% endif %}
+{% endraw %}

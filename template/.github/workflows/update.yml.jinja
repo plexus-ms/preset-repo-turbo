@@ -28,7 +28,7 @@ permissions:
   contents: write
   pull-requests: write
 
-# Where the jobs run: see verify.yml.
+# Where the jobs run: see {% endraw %}{{ 'verify.yml' if publishes_packages else 'pipeline.yml' }}{% raw %}.
 jobs:
   update:
     if: ${{ vars.PLX_APP_ID != '' }}
