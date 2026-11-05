@@ -20,6 +20,13 @@ copier = { version = "latest", uvx = true } # template management
 "npm:@plexus-ms/cli-ci" = { version = "0.106.1", allow_low_downloads = true }
 {%- endif %}
 
+[settings]
+# Not a version source: node is pinned in [tools]. It makes package.json one of
+# node's idiomatic files, which is what lets [monorepo].config_roots match a
+# packages/* (or apps/*) directory that has no mise config of its own; without
+# it `mise install --monorepo` fails in a repo whose roots are only packages.
+idiomatic_version_file_enable_tools = ["node"]
+
 [hooks]
 # Wire up Git hooks and get pnpm from packageManager
 postinstall = "hk install --mise && npx corepack enable"
