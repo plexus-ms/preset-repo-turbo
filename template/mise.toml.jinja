@@ -4,6 +4,7 @@ monorepo_root = true
 config_roots = ["apps/*", "packages/*"]
 
 [tools]
+node = "24" # the runtime; actions/setup-node reads it from here too
 hk = "latest" # Git hooks
 uv = "latest" # required for copier
 copier = { version = "latest", uvx = true } # template management
@@ -18,10 +19,6 @@ copier = { version = "latest", uvx = true } # template management
 # family at the same train number.
 "npm:@plexus-ms/cli-ci" = { version = "0.106.1", allow_low_downloads = true }
 {%- endif %}
-
-[settings]
-# Install node from .node-version
-idiomatic_version_file_enable_tools = ["node"]
 
 [hooks]
 # Wire up Git hooks and get pnpm from packageManager
