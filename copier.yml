@@ -33,6 +33,12 @@ ci_strategy:
   default: forge
   when: "{{ not publishes_packages }}"
 
+alerts_email:
+  type: str
+  help: "Cloud strategy: the address mailed when an instance stalls or the sweep removes something (empty: no mail); a fact, so an answer here and never a vault item"
+  default: ""
+  when: "{{ not publishes_packages and ci_strategy == 'cloud' }}"
+
 renovate_reviewers:
   type: str
   help: "GitHub logins the update bot requests a review from on the PRs that wait for a human, comma-separated (empty: none); a PR the bot merges itself asks nobody unless its checks fail"

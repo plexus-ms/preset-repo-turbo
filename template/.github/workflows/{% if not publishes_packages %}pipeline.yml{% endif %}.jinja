@@ -42,6 +42,7 @@ jobs:
     with:
       tenant: {% endraw %}{{ tenant }}{% raw %}
       overlay: ${{ vars.DEPLOY_OVERLAY || '' }}
+      alerts-email: '{% endraw %}{{ alerts_email }}{% raw %}'
     secrets:
       op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 {% endraw %}
