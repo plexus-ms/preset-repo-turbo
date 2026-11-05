@@ -13,6 +13,11 @@ copier = { version = "latest", uvx = true } # template management
 # the update bot (§ 1 PLX-Updates); the trust-policy approval only waives
 # npm's young-package heuristics.
 "npm:@plexus-ms/cli" = { version = "0.105.0", allow_low_downloads = true }
+{%- if ci_strategy == 'cloud' %}
+# plx-ci: the CI verbs of the cloud strategy (§ 8 PLX-Delivery), the same package
+# family at the same train number.
+"npm:@plexus-ms/cli-ci" = { version = "0.105.0", allow_low_downloads = true }
+{%- endif %}
 
 [settings]
 # Install node from .node-version
@@ -24,7 +29,7 @@ postinstall = "hk install --mise && npx corepack enable"
 
 [env]
 # Command lines will be "turbo build" instead of "pnpm exec turbo build".
-_.path = ["{{config_root}}/node_modules/.bin"]
+_.path = ["{% raw %}{{config_root}}{% endraw %}/node_modules/.bin"]
 
 
 [tasks.promote]
