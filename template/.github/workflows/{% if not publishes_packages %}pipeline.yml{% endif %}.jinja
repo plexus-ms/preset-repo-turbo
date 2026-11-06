@@ -20,6 +20,13 @@
 # PLX-Secrets). The repo variable DEPLOY_OVERLAY, `netbird` when the app
 # hosts are reached over the tenant's overlay, lets the deploy job join it as
 # an ephemeral peer; unset, the hosts are reached as named.
+#
+# Where the forge-side jobs run (repo variables, § 8 PLX-Delivery):
+# CI_RUNNER_SMALL labels plan, release, deploy-targets, deploy and teardown,
+# CI_RUNNER_MEDIUM labels check; `ci-small` and `ci-medium` are the slots of
+# a hybrid host (ci_hybrid_host). Unset, they run on GitHub's runners, which
+# is also the way back while the host is down. build and test run on the
+# instances plan launches either way.
 
 on:
   pull_request:
@@ -43,6 +50,8 @@ jobs:
       tenant: {% endraw %}{{ tenant }}{% raw %}
       overlay: ${{ vars.DEPLOY_OVERLAY || '' }}
       alerts-email: '{% endraw %}{{ alerts_email }}{% raw %}'
+      runner-small: ${{ vars.CI_RUNNER_SMALL || 'ubuntu-latest' }}
+      runner-medium: ${{ vars.CI_RUNNER_MEDIUM || 'ubuntu-latest' }}
     secrets:
       op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 {% endraw %}
