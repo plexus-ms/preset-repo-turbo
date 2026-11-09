@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   check:
-    uses: plexus-ms/primitives/.github/workflows/_check.yml@0.112.0
+    uses: plexus-ms/primitives/.github/workflows/_check.yml@0.113.0
     with:
       strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
       tasks: verify
@@ -58,7 +58,7 @@ jobs:
     # PLX_APP_ID, secret PLX_APP_PRIVATE_KEY) so that the new tip
     # runs this workflow; a push with the workflow token starts no run.
     if: ${{ startsWith(github.head_ref, 'renovate/') }}
-    uses: plexus-ms/primitives/.github/workflows/_changeset.yml@0.112.0
+    uses: plexus-ms/primitives/.github/workflows/_changeset.yml@0.113.0
     permissions:
       contents: write
     with:
@@ -102,7 +102,7 @@ concurrency:
 
 jobs:
   check:
-    uses: plexus-ms/primitives/.github/workflows/_check.yml@0.112.0
+    uses: plexus-ms/primitives/.github/workflows/_check.yml@0.113.0
     with:
       strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
       turbo-cache: {% endraw %}{{ 'true' if ci_registry == 'own' else 'false' }}{% raw %}
@@ -111,7 +111,7 @@ jobs:
 
   verify:
     needs: check
-    uses: plexus-ms/primitives/.github/workflows/_verify.yml@0.112.0
+    uses: plexus-ms/primitives/.github/workflows/_verify.yml@0.113.0
     with:
       strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
       registry: {% endraw %}{{ ci_registry }}{% raw %}
