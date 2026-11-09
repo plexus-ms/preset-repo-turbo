@@ -7,7 +7,7 @@
 # file.
 #
 # Where the jobs run is this repo's answer `ci_strategy` (§ 8 PLX-Delivery):
-# {% endraw %}{{ strategy }}{% raw %}. The repo variable CI_STRATEGY overrides it without a commit;
+# {% endraw %}{{ ci_strategy }}{% raw %}. The repo variable CI_STRATEGY overrides it without a commit;
 # `github` there is the way back to the forge's runners while a runner host
 # is down.
 
@@ -28,7 +28,7 @@ jobs:
   check:
     uses: plexus-ms/primitives/.github/workflows/_check.yml@0.113.0
     with:
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
       turbo-cache: {% endraw %}{{ 'true' if ci_registry == 'own' else 'false' }}{% raw %}
     secrets:
       op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}

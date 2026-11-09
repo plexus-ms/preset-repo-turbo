@@ -25,7 +25,7 @@ jobs:
   housekeeping:
     uses: plexus-ms/primitives/.github/workflows/_housekeeping.yml@0.113.0
     with:
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
       registry: ghcr
       dry-run: ${{ inputs.dry_run || false }}
 {% endraw %}

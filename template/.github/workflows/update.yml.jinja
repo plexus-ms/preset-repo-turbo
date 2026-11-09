@@ -36,7 +36,7 @@ jobs:
     with:
       train: ${{ inputs.train || '' }}
       app_id: ${{ vars.PLX_APP_ID }}
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
     secrets:
       app_private_key: ${{ secrets.PLX_APP_PRIVATE_KEY }}
 {% endraw %}

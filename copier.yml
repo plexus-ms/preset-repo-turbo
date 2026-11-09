@@ -28,17 +28,10 @@ ci_strategy:
   type: str
   help: "Where the CI jobs run (§ 8 PLX-Delivery): github, the forge's runners; on-prem, container slots on runner hosts of the tenant's own for every job; hybrid, slots for the small and medium jobs and a throwaway cloud instance for each build and test"
   default: github
-  validator: "{% if ci_strategy not in ['github', 'on-prem', 'hybrid', 'forge', 'cloud'] %}ci_strategy is github, on-prem or hybrid{% endif %}"
-
-# The strategy the templates act on. Until train 0.110.0 the answers were
-# forge and cloud; an answers file that still says so is read as github and
-# hybrid, since copier re-renders the old template with the stored answer
-# and so cannot be handed a value the old template did not know. Never asked,
-# never stored. The legacy values go once no consumer is below 0.111.0.
-strategy:
-  type: str
-  default: "{{ {'forge': 'github', 'cloud': 'hybrid'}.get(ci_strategy, ci_strategy) }}"
-  when: false
+  choices:
+    - github
+    - on-prem
+    - hybrid
 
 ci_registry:
   type: str
@@ -46,7 +39,7 @@ ci_registry:
   choices:
     - ghcr
     - own
-  default: "{{ 'ghcr' if strategy == 'github' else 'own' }}"
+  default: "{{ 'ghcr' if ci_strategy == 'github' else 'own' }}"
   when: "{{ not publishes_packages }}"
 
 ci_overlay:
@@ -62,7 +55,7 @@ alerts_email:
   type: str
   help: "Hybrid strategy: the address mailed when an instance misses its boot and is kept (empty: no mail); a fact, so an answer here and never a vault item"
   default: ""
-  when: "{{ not publishes_packages and strategy == 'hybrid' }}"
+  when: "{{ not publishes_packages and ci_strategy == 'hybrid' }}"
 
 renovate_reviewers:
   type: str

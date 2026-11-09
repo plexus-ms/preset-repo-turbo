@@ -13,7 +13,7 @@
 # the update bot's branches get theirs written by `plx changeset` instead.
 #
 # Where the jobs run is this repo's answer `ci_strategy` (§ 8 PLX-Delivery):
-# {% endraw %}{{ strategy }}{% raw %}. The repo variable CI_STRATEGY overrides it without a commit;
+# {% endraw %}{{ ci_strategy }}{% raw %}. The repo variable CI_STRATEGY overrides it without a commit;
 # `github` there is the way back to the forge's runners while a runner host
 # is down.
 
@@ -31,7 +31,7 @@ jobs:
   check:
     uses: plexus-ms/primitives/.github/workflows/_check.yml@0.113.0
     with:
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
       tasks: verify
 
   changeset-status:
@@ -42,7 +42,7 @@ jobs:
     # devDependency bump trips it and owes no release; the changeset job below
     # writes the one a runtime bump owes.
     if: ${{ !startsWith(github.head_ref, 'changeset-release/') && !startsWith(github.head_ref, 'renovate/') }}
-    runs-on: ${{ (vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}') == 'github' && 'ubuntu-latest' || 'ci-small' }}
+    runs-on: ${{ (vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}') == 'github' && 'ubuntu-latest' || 'ci-small' }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -63,7 +63,7 @@ jobs:
       contents: write
     with:
       app_id: ${{ vars.PLX_APP_ID }}
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
     secrets:
       app_private_key: ${{ secrets.PLX_APP_PRIVATE_KEY }}
 {% endraw %}{% else %}{% raw %}name: on_pr
@@ -80,7 +80,7 @@ jobs:
 # everything else is read from the vault <owner>-ci (§ 3 PLX-Secrets).
 #
 # Where the jobs run is this repo's answer `ci_strategy` (§ 8 PLX-Delivery):
-# {% endraw %}{{ strategy }}{% raw %}. The repo variable CI_STRATEGY overrides it without a commit;
+# {% endraw %}{{ ci_strategy }}{% raw %}. The repo variable CI_STRATEGY overrides it without a commit;
 # `github` there is the way back to the forge's runners while a runner host
 # is down.
 # The candidates live in `ci_registry`: {% endraw %}{{ ci_registry }}{% raw %}.
@@ -104,7 +104,7 @@ jobs:
   check:
     uses: plexus-ms/primitives/.github/workflows/_check.yml@0.113.0
     with:
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
       turbo-cache: {% endraw %}{{ 'true' if ci_registry == 'own' else 'false' }}{% raw %}
     secrets:
       op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
@@ -113,7 +113,7 @@ jobs:
     needs: check
     uses: plexus-ms/primitives/.github/workflows/_verify.yml@0.113.0
     with:
-      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ strategy }}{% raw %}' }}
+      strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
       registry: {% endraw %}{{ ci_registry }}{% raw %}
       alerts-email: '{% endraw %}{{ alerts_email }}{% raw %}'
     secrets:
