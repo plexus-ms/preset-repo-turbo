@@ -61,3 +61,9 @@ renovate_reviewers:
   type: str
   help: "GitHub logins the update bot requests a review from on the PRs that wait for a human, comma-separated (empty: none); a PR the bot merges itself asks nobody unless its checks fail"
   default: ""
+
+update_max_age:
+  type: int
+  help: "The backstop of the train pull (§ 3 PLX-Updates), in days: this repo takes the newest train once the oldest one it has not taken is this old, and rests on the train it has until then; 0 takes every train as it is cut, and more than 30 is a deviation to own in PLEXUS.md"
+  default: 30
+  validator: "{% if update_max_age < 0 %}A number of days, zero or more{% endif %}"
