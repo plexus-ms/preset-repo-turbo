@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   check:
-    uses: plexus-ms/tooling/.github/workflows/_check.yml@0.119.0
+    uses: plexus-ms/tooling/.github/workflows/_check.yml@0.120.0
     with:
       strategy: ${{ vars.CI_STRATEGY || '{% endraw %}{{ ci_strategy }}{% raw %}' }}
       turbo-cache: {% endraw %}{{ 'true' if ci_registry == 'own' else 'false' }}{% raw %}
