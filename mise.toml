@@ -1,0 +1,23 @@
+[tools]
+hk = "latest" # Git hooks
+uv = "latest" # required for copier
+copier = { version = "latest", uvx = true } # renders the template for the newborn test
+
+[hooks]
+postinstall = "if command -v hk >/dev/null; then hk install --mise; fi"
+
+# Contract verbs (§ 3 PLX-Repo). The repo is a copier template: verify renders
+# it and runs the generated repo's own lint, and the verbs it has no use for
+# exist and pass.
+
+[tasks.verify]
+description = "Render the template as a new repo, in both shapes, and run the generated repo's own lint"
+run = "tests/newborn.sh"
+
+[tasks.dev]
+description = "No-op: the repo is a template; edit the files under template/"
+run = 'echo "dev: nothing to start in a template"'
+
+[tasks.build]
+description = "No-op: the template produces no artifact; copier renders it"
+run = 'echo "build: nothing to build in a template"'

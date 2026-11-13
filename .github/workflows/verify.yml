@@ -1,0 +1,22 @@
+name: verify
+
+# Mounts the verify verb on every push (§ 2 PLX-Delivery): the template is
+# rendered as a new repo and the generated repo's own lint is run in it, the
+# same `mise verify` the pre-push hook runs, through the shared `check` mount
+# with the whole verb as its task.
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    uses: plexus-ms/tooling/.github/workflows/_check.yml@0.120.0
+    with:
+      tasks: verify
